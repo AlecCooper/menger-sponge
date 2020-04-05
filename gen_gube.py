@@ -1,8 +1,4 @@
-
-import Rhino
 import rhinoscriptsyntax as rs
-import scriptcontext
-import System.Guid
 
 class Cube():
 
@@ -105,42 +101,27 @@ def gen_cube(depth, origin, length):
             
         sub_cubes = cube.get_children()
         
-    # Create a rhino mesh
-    #mesh = Rhino.Geometry.Mesh()
-        
+    # Create a mesh for each subcube
     for sub_cube in sub_cubes:
-        #sub_mesh = Rhino.Geometry.Mesh()
+        
         vertices = []
         for vertex in sub_cube.vertices:
-            #sub_mesh.Vertices.Add(vertex[0],vertex[1],vertex[2])
+            
             vertices.append(vertex)
         
         faces = []
         for face in sub_cube.faceVertices:
-            #sub_mesh.Faces.AddFace(face[0],face[1],face[2],face[3])
             faces.append(face)
             
         rs.AddMesh(vertices, faces)
             
-        #origin = sub_cube.origin
-        #sub_mesh.Translate(origin[0],origin[1],origin[2])
-                
-        #mesh.Append(sub_mesh)
-        #rs.MessageBox ("Hello World")
 
-    
-    #mesh.Normals.ComputeNormals()
-    #mesh.Compact()
-            
-    #if scriptcontext.doc.Objects.AddMesh(mesh)!=System.Guid.Empty:
-    #    scriptcontext.doc.Views.Redraw()
-    #    return Rhino.Commands.Result.Success
-    #return Rhino.Commands.Result.Failure
-        
-        
 
 if __name__=="__main__":
-    cube = gen_cube(5,(0.,0.,0.),10)
+    length = rs.GetReal("Side length of cube:")
+    depth = rs.GetInteger("Number of iterations:")
+    origin = rs.GetPoint("Set the origin:")
+    cube = gen_cube(depth-1,origin,length)
     
     
 
